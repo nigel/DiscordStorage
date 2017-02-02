@@ -78,7 +78,7 @@ def parseArgs(inp):
         f.close()
         TOKEN_SECRET = json.loads(first.replace("\\n",""))['TOKEN']
         for el in inp:
-            if '-dl' == el:
+            if '-dl' == el or '-d' == el:
                 if not ((not(FILES == None)) and (inp[inp.index(el)+1] in FILES.keys())):
                     print('\n[ERROR] File code not found\n')
                 else:
@@ -89,13 +89,13 @@ def parseArgs(inp):
                     threading.Thread(target=telldownload,args=(client,obj,)).start()
                     client.start()
                     break
-            elif '-up' == el:
+            elif '-up' == el or '-u' == el:
                 print('UPLOADING: ' + inp[inp.index(el)+1])
                 client = core.Core(os.getcwd() + "/",TOKEN_SECRET,None)
                 threading.Thread(target=tellupload,args=(first,second,inp[inp.index(el)+1],genCode(),client,)).start()
                 client.start()
                 break
-            elif '-list' == el:
+            elif '-list' == el or '-l' == el:
                 if not (FILES == None):
                     print('\nFILES UPLOADED TO DISCORD:\n')
                     for key in FILES.keys():
@@ -138,7 +138,6 @@ except IndexError:
     print('COMMANDS:')
     print('[-h, -help] :: Show the current message')
     print('[-i, -info] :: Displays the information about the application')
-    print('[-c, -config] :: Begins steps to configuring this application.')
     print('[-l, -list] :: Lists all the file informations that has been uploaded to the server.')
     print('[-d, -download] (FILE CODE) :: Downloads a file from the server. A filecode is taken in as the file identifier.')
     print('[-u, -upload] (FILE DIRECTORY) :: Uploads a file to the server. The full file directory is taken in for the argument.\n')
