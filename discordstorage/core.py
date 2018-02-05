@@ -29,7 +29,7 @@ class Core:
          try:
             return future.result()
          except Exception as exc:
-            print(exc)
+            return -1
          
     #runs the async_download in a threadsafe way,
     #can be run from an ything outside of main thread.
