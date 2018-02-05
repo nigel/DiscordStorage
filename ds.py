@@ -33,12 +33,15 @@ def tellupload(line1,line2,cmd,code,client):
         return
     print(line2)
     flcode = client.upload(cmd,code)
-    jobject = json.loads(line2)
-    jobject[code] = flcode
-    f = open('config.discord','w')
-    f.write(line1)
-    f.write(json.dumps(jobject))
-    f.close()
+    if flcode == -1:
+        print('[ERROR] File upload fail')
+    else:
+        jobject = json.loads(line2)
+        jobject[code] = flcode
+        f = open('config.discord','w')
+        f.write(line1)
+        f.write(json.dumps(jobject))
+        f.close()
     client.logout()
 
 def GetHumanReadable(size,precision=2):
@@ -99,7 +102,17 @@ def parseArgs(inp):
                 if not (FILES == None):
                     print('\nFILES UPLOADED TO DISCORD:\n')
                     for key in FILES.keys():
-                        print('name: ' + str(FILES[key][0]) + ' | code: ' + str(key) + ' | size: ' + GetHumanReadable(FILES[key][1]) +'')
+                        if FILES[key] == None:   
+                            #correct nullfied attribute
+                            print(' [CONSOLE] Removed incorrect file with filecode ' + str(key))
+                            f = open('config.discord','w')
+                            f.write(first)
+                            jobject = json.loads(second)
+                            del jobject[key]
+                            f.write(json.dumps(jobject))
+                            f.close()
+                        else:
+                            print('name: ' + str(FILES[key][0]) + ' | code: ' + str(key) + ' | size: ' + GetHumanReadable(FILES[key][1]) +'')
                     print('\n')
                     break
 
