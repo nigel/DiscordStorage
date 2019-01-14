@@ -1,4 +1,4 @@
-import discord,asyncio,sys
+import discord,asyncio
 
 '''
 this class uses discord.py
@@ -9,16 +9,17 @@ Refer to the following documentation:
 http://discordpy.readthedocs.io/en/latest/api.html
 '''
 
-
+global client,loop,channelid
 client = discord.Client() #discord client object
 loop = None #async loop. used by other classes to add coroutines
 channelid = None
+
 class Session:
-    
+
     global client,loop,channelid
 
-
     def __init__(self,token,channel):
+        global channelid
         self.token = token #bot token
         channelid = channel #channel ID the bot uploads files to
     #closes all connections
@@ -30,13 +31,10 @@ class Session:
     #RUNS ON MAIN THREAD, ASYNC.
     @client.event
     async def on_ready():
-        global loop,client,channelid
+        global client,loop,channelid
         loop = asyncio.get_event_loop()
-        if channelid == None:
-            for server in client.servers:
-                channelid = server.default_channel.id
-                break
-
+        if client.get_channel(channelid) == None:
+            print("Channel ID doesn't exist, reconfigure the program or update config.discord")
 
     #Returns text channel bot is uploading files to
     def getChannel(self):
