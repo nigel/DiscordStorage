@@ -1,7 +1,6 @@
 import os,io,aiohttp,asyncio
 from .Session import Session
 
-
 class Core:
 
     def __init__(self,directory,token,channel):
@@ -83,10 +82,3 @@ class Core:
                     return int(os.path.getsize(f)/8000000) + 1
             else:
                     return 1
-
-
-
-
-
-
-
