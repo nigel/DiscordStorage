@@ -110,8 +110,8 @@ def parseArgs(inp):
                     print('\n')
                     break
             elif '-help' == el or '-h' == el:
-                print('----------------------\n|DiscordStorage v0.1 |')
-                print('|github.com/nigelchen|\n----------------------')
+                print('----------------------\n|DiscordStorage|')
+                print('|github.com/nigel|\n----------------------')
                 print('\nUsage: python ds.py [command] (target)\n')
                 print('COMMANDS:')
                 print('[-h, -help] :: Show the current message')
