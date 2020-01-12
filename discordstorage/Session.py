@@ -32,12 +32,12 @@ class Session:
     async def on_ready():
         global client,loop,channelid
         loop = asyncio.get_event_loop()
-        if client.get_channel(channelid) == None:
+        if client.get_channel(int(channelid)) == None:
             print("Channel ID doesn't exist, reconfigure the program or update config.discord")
 
     #Returns text channel bot is uploading files to
     def getChannel(self):
-        return client.get_channel(channelid)
+        return client.get_channel(int(channelid))
 
     #Connects to discord servers.
     #LEADS TO ASYNC LOOP. RUNS ON MAIN THREAD.

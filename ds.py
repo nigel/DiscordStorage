@@ -81,7 +81,7 @@ def parseArgs(inp):
                 else:
                     obj = json.loads(second)[inp[inp.index(el)+1]]
                     print('DOWNLOADING: ' + obj[0] )
-                    print('SIZE: ' + str(obj[1]))
+                    print('SIZE: ' + GetHumanReadable(obj[1]))
                     client = core.Core(os.getcwd() + "/",TOKEN_SECRET,ROOM_ID)
                     threading.Thread(target=telldownload,args=(client,obj,)).start()
                     client.start()

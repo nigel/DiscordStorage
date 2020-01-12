@@ -1,4 +1,4 @@
-import os,io,aiohttp,asyncio
+import os,io,aiohttp,asyncio, discord
 from .Session import Session
 
 class Core:
@@ -28,6 +28,7 @@ class Core:
          try:
             return future.result()
          except Exception as exc:
+            print(exc)
             return -1
          
     #runs the async_download in a threadsafe way,
@@ -37,7 +38,8 @@ class Core:
         try:
             return future.result()
         except Exception as exc:
-            print(exc)
+            print('[ERROR] ' + exc)
+            return -1
 
     #Downloads a file from the server.
     #The list object in this format is needed: [filename,size,[DL URLs]]
@@ -47,11 +49,12 @@ class Core:
             f = open(self.directory + "downloads/" + inp[0],'wb')
             for i in range(0,len(inp[2])):
                     #user agent is not in compliance with Discord API rules. Change accordingly if needed
-                    agent = {'User-Agent':'DiscordStorageBot (http://github.com/nigelchen/discordstorage, 0.1)'}
-                    async with aiohttp.get(inp[2][i],headers=agent) as r:
-                            if r.status == 200:
-                                    async for data in r.content.iter_any():
-                                            f.write(data)
+                    agent = {'User-Agent':'DiscordStorageBot (http://github.com/nigel/discordstorage)'}
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(inp[2][i],headers=agent) as r:
+                                if r.status == 200:
+                                        async for data in r.content.iter_any():
+                                                f.write(data)
             f.close()
             #files[code] = [name,size,[urls]]
 
@@ -63,11 +66,11 @@ class Core:
             f = open(inp,'rb')
             for i in range(0,self.splitFile(inp)):
                     o = io.BytesIO(f.read(8000000))
-                    await self.client.send_file(self.session.getChannel(),o,filename=code+"." + str(i))
-
-                    async for message in self.client.logs_from(self.session.getChannel(),limit=99999):
+                    discord_file = discord.File(fp=o,filename=code+"." + str(i))
+                    await self.session.getChannel().send(file=discord_file)
+                    async for message in self.session.getChannel().history(limit=None):
                             if message.author == self.client.user:
-                                    urls.append(message.attachments[0]['url'])
+                                    urls.append(message.attachments[0].url)
                                     break
             f.close()
 
