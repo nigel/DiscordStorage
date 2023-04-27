@@ -65,7 +65,7 @@ class Core:
             urls = []
             f = open(inp,'rb')
             for i in range(0,self.splitFile(inp)):
-                    o = io.BytesIO(f.read(8000000))
+                    o = io.BytesIO(f.read(24000000))
                     discord_file = discord.File(fp=o,filename=code+"." + str(i))
                     await self.session.getChannel().send(file=discord_file)
                     async for message in self.session.getChannel().history(limit=None):
@@ -81,7 +81,7 @@ class Core:
     #Discord NITRO max upload size at a time: 50MB.
     #Change accordingly if needed.
     def splitFile(self,f):
-            if (os.path.getsize(f)/8000000) > 1:
-                    return int(os.path.getsize(f)/8000000) + 1
+            if (os.path.getsize(f)/24000000) > 1:
+                    return int(os.path.getsize(f)/24000000) + 1
             else:
                     return 1
