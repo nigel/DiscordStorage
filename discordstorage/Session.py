@@ -9,7 +9,8 @@ http://discordpy.readthedocs.io/en/latest/api.html
 '''
 
 global client,loop,channelid
-client = discord.Client() #discord client object
+intents = discord.Intents.default()
+client = discord.Client(intents=intents) #discord client object
 loop = None #async loop. used by other classes to add coroutines
 channelid = None
 
